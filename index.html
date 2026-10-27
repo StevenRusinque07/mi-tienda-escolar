@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Demo - Proyecto Escolar</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f8f9fa; color: #333; }
+    
+    /* Header / Navbar */
+    header { background: #1a1a1a; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; sticky: top; position: sticky; top: 0; z-index: 100; }
+    header h1 { font-size: 1.4rem; color: #00bcd4; }
+    nav button { background: none; border: none; color: white; font-size: 1rem; margin-left: 1rem; cursor: pointer; padding: 0.5rem; }
+    nav button:hover { color: #00bcd4; }
+    .cart-btn { background: #00bcd4; border-radius: 20px; padding: 0.4rem 1rem; color: #1a1a1a; font-weight: bold; }
+
+    /* Secciones */
+    section { display: none; padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+    section.active { display: block; }
+
+    /* Hero Banner */
+    .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://picsum.photos/1200/400') center/cover; color: white; text-align: center; padding: 4rem 1rem; border-radius: 12px; margin-bottom: 2rem; }
+    .hero h2 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+    /* Grid de Productos */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .product-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; padding: 1rem; }
+    .product-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 6px; }
+    .product-card h3 { margin: 0.8rem 0 0.4rem; font-size: 1.1rem; }
+    .product-card .price { color: #2e7d32; font-weight: bold; font-size: 1.1rem; margin-bottom: 0.8rem; }
+    .btn-add { background: #1a1a1a; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; width: 100%; }
+    .btn-add:hover { background: #00bcd4; color: #1a1a1a; }
+
+    /* Carrito */
+    .cart-list { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .cart-item { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid #eee; }
+    .checkout-btn { margin-top: 1.5rem; background: #2e7d32; color: white; border: none; padding: 0.8rem 1.5rem; font-size: 1rem; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; }
+
+    /* Misión y Visión */
+    .about-box { background: white; padding: 2rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 5px solid #00bcd4; }
+
+    /* Footer */
+    footer { background: #1a1a1a; color: #aaa; text-align: center; padding: 2rem; margin-top: 4rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Navegación -->
+  <header>
+    <h1>Aura & Style</h1>
+    <nav>
+      <button onclick="showTab('inicio')">Inicio</button>
+      <button onclick="showTab('productos')">Productos</button>
+      <button onclick="showTab('nosotros')">Nosotros</button>
+      <button class="cart-btn" onclick="showTab('carrito')">🛒 Carrito (<span id="cart-count">0</span>)</button>
+    </nav>
+  </header>
+
+  <!-- Módulo 1: Inicio -->
+  <section id="inicio" class="active">
+    <div class="hero">
+      <h2>Elegancia en Cada Detalle</h2>
+      <p>Perfumes, accesorios y tendencias para tu estilo diario.</p>
+    </div>
+    <h3 style="margin-bottom: 1rem;">Destacados de la Semana</h3>
+    <div class="product-grid" id="featured-products"></div>
+  </section>
+
+  <!-- Módulo 2: Productos -->
+  <section id="productos">
+    <h2 style="margin-bottom: 1.5rem;">Catálogo Completo</h2>
+    <div class="product-grid" id="all-products"></div>
+  </section>
+
+  <!-- Módulo 3: Sobre Nosotros -->
+  <section id="nosotros">
+    <h2 style="margin-bottom: 1.5rem;">Sobre Nosotros</h2>
+    <div class="about-box">
+      <h3>🎯 Nuestra Misión</h3>
+      <p>Ofrecer artículos de calidad superior que potencien la autenticidad y el estilo único de cada persona, garantizando una experiencia accesible y de alta elegancia.</p>
+    </div>
+    <div class="about-box">
+      <h3>👁️ Nuestra Visión</h3>
+      <p>Convertirnos para el año 2028 en la tienda de referencia líder en accesorios y fragancias dentro del entorno escolar y juvenil, reconocidos por la innovación y atención personalizada.</p>
+    </div>
+  </section>
+
+  <!-- Módulo 4: Carrito Simulado -->
+  <section id="carrito">
+    <h2>Tu Carrito de Compras</h2>
+    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">(Simulador de compras - Proyecto Escolar)</p>
+    <div class="cart-list">
+      <div id="cart-items">
+        <p>El carrito está vacío.</p>
+      </div>
+      <h3 style="margin-top: 1rem; text-align: right;">Total: $<span id="cart-total">0</span></h3>
+      <button class="checkout-btn" onclick="checkout()">Simular Finalización de Compra</button>
+    </div>
+  </section>
+
+  <!-- Footer / Contacto -->
+  <footer>
+    <p><strong>Aura & Style © 2026</strong> - Proyecto Escolar</p>
+    <p>Contacto: contacto@aurastyle.demo | Teléfono: +57 300 000 0000</p>
+    <p>Bogotá, Colombia</p>
+  </footer>
+
+  <script>
+    // Datos simulados de productos
+    const products = [
+      { id: 1, name: "Perfume Midnight Elegance 100ml", price: 120000, img: "https://picsum.photos/300/200?random=1" },
+      { id: 2, name: "Reloj Minimalista Cuero Negro", price: 85000, img: "https://picsum.photos/300/200?random=2" },
+      { id: 3, name: "Gafas de Sol Unisex UV400", price: 45000, img: "https://picsum.photos/300/200?random=3" },
+      { id: 4, name: "Loción Corporal Bloom Vanilla", price: 55000, img: "https://picsum.photos/300/200?random=4" }
+    ];
+
+    let cart = [];
+
+    // Renderizar productos
+    function renderProducts() {
+      const gridHome = document.getElementById('featured-products');
+      const gridAll = document.getElementById('all-products');
+      
+      const html = products.map(p => `
+        <div class="product-card">
+          <img src="${p.img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <p class="price">$${p.price.toLocaleString()}</p>
+          <button class="btn-add" onclick="addToCart(${p.id})">Agregar al carrito</button>
+        </div>
+      `).join('');
+
+      gridHome.innerHTML = html.slice(0, 2); // Muestra solo 2 en inicio
+      gridAll.innerHTML = html;
+    }
+
+    // Cambiar de pestaña
+    function showTab(tabId) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+    }
+
+    // Agregar al carrito
+    function addToCart(id) {
+      const item = products.find(p => p.id === id);
+      cart.push(item);
+      updateCart();
+      alert(`¡"${item.name}" fue agregado al carrito!`);
+    }
+
+    // Actualizar carrito
+    function updateCart() {
+      document.getElementById('cart-count').innerText = cart.length;
+      const container = document.getElementById('cart-items');
+      
+      if (cart.length === 0) {
+        container.innerHTML = "<p>El carrito está vacío.</p>";
+        document.getElementById('cart-total').innerText = "0";
+        return;
+      }
+
+      container.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <span>${item.name}</span>
+          <strong>$${item.price.toLocaleString()}</strong>
+        </div>
+      `).join('');
+
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      document.getElementById('cart-total').innerText = total.toLocaleString();
+    }
+
+    // Simular compra
+    function checkout() {
+      if (cart.length === 0) {
+        alert("Agrega productos antes de simular la compra.");
+        return;
+      }
+      alert("🎉 ¡Simulación exitosa! Tu pedido fue registrado en el sistema escolar de prueba.");
+      cart = [];
+      updateCart();
+      showTab('inicio');
+    }
+
+    // Inicializar
+    renderProducts();
+  </script>
+</body>
+</html>
