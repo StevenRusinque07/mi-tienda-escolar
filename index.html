@@ -9,7 +9,7 @@
     body { background-color: #f8f9fa; color: #333; }
     
     /* Header / Navbar */
-    header { background: #1a1a1a; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    header { background: #1a1a1a; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
     header h1 { font-size: 1.4rem; color: #00bcd4; }
     nav button { background: none; border: none; color: white; font-size: 1rem; margin-left: 1rem; cursor: pointer; padding: 0.5rem; }
     nav button:hover { color: #00bcd4; }
@@ -17,7 +17,7 @@
 
     /* Secciones */
     section { display: none; padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
-    section.active { display: block; }
+    section.active { display: block !important; }
 
     /* Hero Banner */
     .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://picsum.photos/1200/400') center/cover; color: white; text-align: center; padding: 4rem 1rem; border-radius: 12px; margin-bottom: 2rem; }
@@ -50,10 +50,10 @@
   <header>
     <h1>BioClean</h1>
     <nav>
-      <button onclick="showTab('inicio')">Inicio</button>
-      <button onclick="showTab('productos')">Productos</button>
-      <button onclick="showTab('nosotros')">Nosotros</button>
-      <button class="cart-btn" onclick="showTab('carrito')">🛒 Carrito (<span id="cart-count">0</span>)</button>
+      <button type="button" onclick="showTab('inicio')">Inicio</button>
+      <button type="button" onclick="showTab('productos')">Productos</button>
+      <button type="button" onclick="showTab('nosotros')">Nosotros</button>
+      <button type="button" class="cart-btn" onclick="showTab('carrito')">🛒 Carrito (<span id="cart-count">0</span>)</button>
     </nav>
   </header>
 
@@ -125,7 +125,8 @@
       const html = products.map(p => `
         <div class="product-card">
           <img src="${p.img}" alt="${p.name}">
-          <h3>${p.name}</h3> <p class="price">$${p.price.toLocaleString()}</p>
+          <h3>${p.name}</h3>
+          <p class="price">$${p.price.toLocaleString()}</p>
           <button class="btn-add" onclick="addToCart(${p.id})">Agregar al carrito</button>
         </div>
       `).join('');
@@ -137,7 +138,10 @@
     // Cambiar de pestaña
     function showTab(tabId) {
       document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
+      const target = document.getElementById(tabId);
+      if (target) {
+        target.classList.add('active');
+      }
     }
 
     // Agregar al carrito
@@ -161,4 +165,29 @@
 
       container.innerHTML = cart.map(item => `
         <div class="cart-item">
-          <span>${item.name
+          <span>${item.name}</span>
+          <strong>$${item.price.toLocaleString()}</strong>
+        </div>
+      `).join('');
+
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+      document.getElementById('cart-total').innerText = total.toLocaleString();
+    }
+
+    // Simular compra
+    function checkout() {
+      if (cart.length === 0) {
+        alert("Agrega productos antes de simular la compra.");
+        return;
+      }
+      alert("🎉 ¡Simulación exitosa! Tu pedido fue registrado en el sistema escolar de prueba.");
+      cart = [];
+      updateCart();
+      showTab('inicio');
+    }
+
+    // Inicializar
+    renderProducts();
+  </script>
+</body>
+</html>
