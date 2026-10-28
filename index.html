@@ -60,8 +60,8 @@
   <!-- Módulo 1: Inicio -->
   <section id="inicio" class="active">
     <div class="hero">
-      <h2>Elegancia en Cada Detalle</h2>
-      <p>Perfumes, accesorios y tendencias para tu estilo diario.</p>
+      <h2>Un Producto, Múltiples Cuidados</h2>
+      <p>Desinfectante multiusos biodegradable y con envase reutilizable.</p>
     </div>
     <h3 style="margin-bottom: 1rem;">Destacados de la Semana</h3>
     <div class="product-grid" id="featured-products"></div>
@@ -125,8 +125,7 @@
       const html = products.map(p => `
         <div class="product-card">
           <img src="${p.img}" alt="${p.name}">
-          <h3>${p.name}</h3>
-          <p class="price">$${p.price.toLocaleString()}</p>
+          <h3>${p.name}</h3> <p class="price">$${p.price.toLocaleString()}</p>
           <button class="btn-add" onclick="addToCart(${p.id})">Agregar al carrito</button>
         </div>
       `).join('');
@@ -162,29 +161,4 @@
 
       container.innerHTML = cart.map(item => `
         <div class="cart-item">
-          <span>${item.name}</span>
-          <strong>$${item.price.toLocaleString()}</strong>
-        </div>
-      `).join('');
-
-      const total = cart.reduce((sum, item) => sum + item.price, 0);
-      document.getElementById('cart-total').innerText = total.toLocaleString();
-    }
-
-    // Simular compra
-    function checkout() {
-      if (cart.length === 0) {
-        alert("Agrega productos antes de simular la compra.");
-        return;
-      }
-      alert("🎉 ¡Simulación exitosa! Tu pedido fue registrado en el sistema escolar de prueba.");
-      cart = [];
-      updateCart();
-      showTab('inicio');
-    }
-
-    // Inicializar
-    renderProducts();
-  </script>
-</body>
-</html>
+          <span>${item.name
